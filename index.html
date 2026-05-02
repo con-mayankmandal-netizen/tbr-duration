@@ -87,7 +87,28 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
 .dlbt:hover{background:var(--gdm)}
 .rstbt{width:100%;padding:10px;background:transparent;border:1px solid var(--bdr);border-radius:9px;color:var(--tx2);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;margin-top:8px;transition:all .15s}
 .rstbt:hover{border-color:var(--bdr2);color:var(--tx)}
-</style>
+
+/* === ALL EPISODES SECTION === */
+.divider-section{height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent);margin:32px 0}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.section-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:var(--adm);color:var(--ac);border:1px solid var(--abr)}
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.range-row{display:flex;gap:10px;margin-bottom:10px}
+.num-inp{flex:1;background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s;text-align:center}
+.num-inp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+.ae-runbt{width:100%;padding:14px;background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .15s;box-shadow:0 4px 20px rgba(108,99,255,.4);letter-spacing:-.01em}
+.ae-runbt:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(108,99,255,.5)}
+.ae-runbt:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.ae-pgcd{display:none}.ae-pgcd.on{display:block}
+.ae-rscd{display:none}.ae-rscd.on{display:block}
+.ae-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.ae-epitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bdr)}
+.ae-epitem:last-child{border-bottom:none}
+.ae-epnum{flex-shrink:0;font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;width:36px}
+.ae-epname{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ae-epdur{flex-shrink:0;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.ae-epdur.has{background:var(--gdm);color:var(--gn);border:1px solid var(--gbr)}
+.ae-epdur.none{background:var(--sur3);color:var(--tx3);border:1px solid var(--bdr)}</style>
 </head>
 <body>
 <div class="w">
@@ -161,6 +182,63 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
   <button class="dlbt" id="dlBtn">↓ Download CSV</button>
   <button class="rstbt" onclick="resetUI()">↺ New extraction</button>
 </div>
+</div>
+
+<!-- ===== ALL EPISODES DURATION SECTION ===== -->
+<div class="divider-section"></div>
+<div class="section-header">
+  <h1 style="font-size:24px;font-weight:700;letter-spacing:-.03em">All Episodes Duration</h1>
+  <span class="section-badge">NEW</span>
+</div>
+<div class="dsc" style="margin-bottom:20px">Extract audio durations for ALL episodes of a show. Episodes without audio show as N/A. Set episode range to extract a specific slice.</div>
+
+<div class="slb">Show ID</div>
+<div class="card">
+  <input class="sidinp" type="text" id="aeShowId" placeholder="Paste Show ID or full CMS URL"/>
+  <div class="hint">The Show ID is extracted automatically from a full CMS URL</div>
+</div>
+
+<div class="slb">Episode Range <span style="font-size:10px;color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0">(optional — leave blank for all)</span></div>
+<div class="card">
+  <div class="range-row">
+    <div style="flex:1">
+      <label class="flb">Start Episode #</label>
+      <input class="num-inp" type="number" id="aeStart" placeholder="e.g. 1" min="1"/>
+    </div>
+    <div style="flex:1">
+      <label class="flb">End Episode #</label>
+      <input class="num-inp" type="number" id="aeEnd" placeholder="e.g. 100" min="1"/>
+    </div>
+  </div>
+  <div class="hint">Episodes are filtered by their episode number (natural_sequence_number). Leave both blank to get all episodes.</div>
+</div>
+
+<div class="slb">Output</div>
+<div class="card">
+  <div style="margin-bottom:14px"><label class="flb">CSV Filename</label><input class="tinp" id="aeCsvName" value="All_Episodes_Duration.csv"/></div>
+  <button class="ae-runbt" id="aeRunBtn" onclick="runAllEps()">
+    <div class="spin" id="aeSpin"></div>
+    <span id="aeBi">⚡</span><span id="aeBl">Extract All Episodes Duration</span>
+  </button>
+</div>
+
+<div class="card ae-pgcd" id="aePgCard">
+  <div class="pghr"><div class="pglb" id="aePgLbl">Initialising…</div><div class="pgpc" id="aePgPct">0%</div></div>
+  <div class="pgtr"><div class="pgbr" id="aePgBar"></div></div>
+  <div class="log" id="aeLogBox"></div>
+</div>
+
+<div class="card ae-rscd" id="aeResCard">
+  <div class="slb" style="margin-bottom:14px">Results</div>
+  <div class="ae-stats">
+    <div class="st"><div class="stv a" id="aeStTotal">0</div><div class="stl">Total Eps</div></div>
+    <div class="st"><div class="stv g" id="aeStWithDur">0</div><div class="stl">With Audio</div></div>
+    <div class="st"><div class="stv" style="color:var(--tx2)" id="aeStDur">0h 0m</div><div class="stl">Total Duration</div></div>
+  </div>
+  <div class="div"></div>
+  <div class="epscroll" id="aeEpList"></div>
+  <button class="dlbt" id="aeDlBtn">↓ Download CSV</button>
+  <button class="rstbt" onclick="resetAE()">↺ New extraction</button>
 </div>
 <script>
 'use strict';
@@ -286,6 +364,111 @@ function resetUI(){
   document.getElementById('epList').innerHTML='';
   setProg(0,'Initialising…');
 }
-</script>
+
+
+/* ===== ALL EPISODES DURATION ===== */
+var _aeCsv='',_aeFn='';
+function aeLg(m,t){var b=document.getElementById('aeLogBox'),r=document.createElement('div');r.className='ll '+(t||'info');var ts=new Date().toLocaleTimeString('en-GB',{hour12:false});r.innerHTML='<span class="lt">'+ts+'</span><span class="lm">'+m+'</span>';b.appendChild(r);b.scrollTop=b.scrollHeight;}
+function aeSetProg(p,l){document.getElementById('aePgBar').style.width=p+'%';document.getElementById('aePgPct').textContent=Math.round(p)+'%';if(l)document.getElementById('aePgLbl').textContent=l;}
+async function runAllEps(){
+  if(!_t||!_u){alert('Not connected.\n\nUse Method 1:\n1. Go to cms.pocketfm.com\n2. Press F12 → Console tab\n3. Click "Copy Script" on this page\n4. Paste in console → Enter');return;}
+  var sid=extId(document.getElementById('aeShowId').value.trim());
+  if(!sid||!/^[a-f0-9]{20,}$/i.test(sid)){alert('Please enter a valid Show ID or paste a full CMS URL.');return;}
+  var startEp=parseInt(document.getElementById('aeStart').value)||null;
+  var endEp=parseInt(document.getElementById('aeEnd').value)||null;
+  if(startEp&&endEp&&startEp>endEp){alert('Start episode must be less than or equal to end episode.');return;}
+  var fn=(document.getElementById('aeCsvName').value.trim()||'All_Episodes_Duration').replace(/\.csv$/i,'')+'.csv';
+  var btn=document.getElementById('aeRunBtn');
+  btn.disabled=true;
+  document.getElementById('aeSpin').className='spin on';
+  document.getElementById('aeBi').style.display='none';
+  document.getElementById('aeBl').textContent='Extracting…';
+  document.getElementById('aePgCard').className='card ae-pgcd on';
+  document.getElementById('aeResCard').className='card ae-rscd';
+  document.getElementById('aeLogBox').innerHTML='';
+  var H=hdrs(),allEps=[],seenIds=new Set();
+  var params=new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
+  var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+params;
+  var pg=0;
+  aeLg('Show: '+sid.slice(0,14)+'… | Range: ep'+(startEp||'1')+' → ep'+(endEp||'∞'),'info');
+  while(url&&pg<200){
+    pg++;
+    aeSetProg(Math.min(pg*3,85),'Fetching page '+pg+'…');
+    try{
+      var resp=await fetch(url,{headers:H,credentials:'include'});
+      if(!resp.ok){aeLg('HTTP '+resp.status+' on page '+pg,'er');break;}
+      var d=await resp.json();
+      var eps=d&&d.result&&d.result.episodes||[];
+      var added=0,pastEnd=false;
+      eps.forEach(function(ep){
+        var num=ep.natural_sequence_number||0;
+        // Skip if before start range
+        if(startEp&&num<startEp)return;
+        // Mark if past end range
+        if(endEp&&num>endEp){pastEnd=true;return;}
+        var eid=ep.chapter_details&&ep.chapter_details.chapter_id;
+        if(eid&&seenIds.has(eid))return;
+        if(eid)seenIds.add(eid);
+        allEps.push(ep);
+        added++;
+      });
+      aeLg('Page '+pg+' → '+added+' eps ('+allEps.length+' total)','pg');
+      // Stop if all episodes on this page are past the end range
+      if(endEp&&pastEnd&&eps.every(function(ep){return (ep.natural_sequence_number||0)>endEp;}))break;
+      url=d&&d.result&&d.result.next_url||null;
+      if(!added&&eps.length>0&&!pastEnd)break;
+    }catch(ex){aeLg('Error: '+ex.message,'er');break;}
+  }
+  aeSetProg(92,'Building CSV…');
+  if(!allEps.length){aeLg('No episodes found.','er');btn.disabled=false;document.getElementById('aeSpin').className='spin';document.getElementById('aeBi').style.display='';document.getElementById('aeBl').textContent='Extract All Episodes Duration';return;}
+  // Sort by episode number
+  allEps.sort(function(a,b){return(a.natural_sequence_number||0)-(b.natural_sequence_number||0);});
+  // Build CSV
+  var cols=['episode_number','episode_title','duration_mmss','duration_seconds','audio_status'];
+  var csv=cols.join(',')+"\n";
+  allEps.forEach(function(ep){
+    var num=ep.natural_sequence_number||'';
+    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'';
+    var status=ep.chapter_details&&ep.chapter_details.audio_status||'unknown';
+    var dur=fmtDur(ep.audio_duration);
+    var secs=ep.audio_duration||0;
+    csv+='"'+String(num).replace(/"/g,'""')+'","'+title.replace(/"/g,'""')+'","'+(secs>0?dur.mmss:'N/A')+'","'+secs+'","'+status+'"\n';
+  });
+  _aeCsv=csv;_aeFn=fn;
+  var totalSec=allEps.reduce(function(s,ep){return s+(ep.audio_duration||0);},0);
+  var th=Math.floor(totalSec/3600),tm=Math.floor((totalSec%3600)/60);
+  var withDur=allEps.filter(function(ep){return ep.audio_duration>0;}).length;
+  aeSetProg(100,'Done!');
+  aeLg('✓ '+allEps.length+' eps | '+withDur+' with audio | '+th+'h '+tm+'m total','ok');
+  document.getElementById('aeStTotal').textContent=allEps.length;
+  document.getElementById('aeStWithDur').textContent=withDur;
+  document.getElementById('aeStDur').textContent=th+'h '+tm+'m';
+  var list=document.getElementById('aeEpList');list.innerHTML='';
+  allEps.forEach(function(ep){
+    var dur=fmtDur(ep.audio_duration);
+    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'Unknown';
+    var hasDur=ep.audio_duration>0;
+    var el=document.createElement('div');el.className='ae-epitem';
+    el.innerHTML='<div class="ae-epnum">#'+(ep.natural_sequence_number||'?')+'</div>'
+      +'<div class="ae-epname">'+title+'</div>'
+      +'<div class="ae-epdur '+(hasDur?'has':'none')+'">'+(hasDur?dur.mmss:'N/A')+'</div>';
+    list.appendChild(el);
+  });
+  document.getElementById('aeDlBtn').onclick=function(){
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([_aeCsv],{type:'text/csv'}));
+    a.download=_aeFn;document.body.appendChild(a);a.click();document.body.removeChild(a);
+  };
+  document.getElementById('aeDlBtn').textContent='↓ Download '+fn+' ('+allEps.length+' eps)';
+  document.getElementById('aeResCard').className='card ae-rscd on';
+  btn.disabled=false;document.getElementById('aeSpin').className='spin';document.getElementById('aeBi').style.display='';document.getElementById('aeBl').textContent='Extract All Episodes Duration';
+}
+function resetAE(){
+  document.getElementById('aePgCard').className='card ae-pgcd';
+  document.getElementById('aeResCard').className='card ae-rscd';
+  document.getElementById('aeLogBox').innerHTML='';
+  document.getElementById('aeEpList').innerHTML='';
+  aeSetProg(0,'Initialising…');
+}</script>
 </body>
 </html>
