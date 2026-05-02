@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>TBR Duration Extractor — PocketFM CMS</title>
+<title>TBR &amp; All Episodes — PocketFM CMS</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -19,7 +19,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',-apple-system,sans
 body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 80% 10%,rgba(34,211,160,.05) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(108,99,255,.04) 0%,transparent 50%);pointer-events:none;z-index:0}
 .w{max-width:680px;margin:0 auto;position:relative;z-index:1}
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.bico{width:36px;height:36px;background:linear-gradient(135deg,#22d3a0,#06b6d4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 4px 14px rgba(34,211,160,.35);flex-shrink:0}
+.bico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.bico.teal{background:linear-gradient(135deg,#22d3a0,#06b6d4);box-shadow:0 4px 14px rgba(34,211,160,.35)}
+.bico.purple{background:linear-gradient(135deg,#6c63ff,#8b5cf6);box-shadow:0 4px 14px rgba(108,99,255,.35)}
 .bnm{font-size:15px;font-weight:700;letter-spacing:-.02em}
 .bsb{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em}
 h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
@@ -53,67 +55,67 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
 .flb{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tx2);margin-bottom:6px}
 .tinp{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;font-weight:500;outline:none;transition:border-color .15s,box-shadow .15s}
 .tinp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+.dgd{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.numinp{width:100%;background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s}
+.numinp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+.numinp::placeholder{color:var(--tx3)}
 .byl{text-align:center;font-size:11.5px;color:var(--tx3);margin-bottom:12px}
 .byl a{color:var(--ac);text-decoration:none;font-weight:500}
-.runbt{width:100%;padding:14px;background:linear-gradient(135deg,#22d3a0,#06b6d4);border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .15s;box-shadow:0 4px 20px rgba(34,211,160,.35);letter-spacing:-.01em}
-.runbt:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(34,211,160,.45)}
-.runbt:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.runbt{width:100%;padding:14px;border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .15s;letter-spacing:-.01em}
+.runbt.teal{background:linear-gradient(135deg,#22d3a0,#06b6d4);box-shadow:0 4px 20px rgba(34,211,160,.35)}
+.runbt.teal:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(34,211,160,.45)}
+.runbt.purple{background:linear-gradient(135deg,#6c63ff,#8b5cf6);box-shadow:0 4px 20px rgba(108,99,255,.4)}
+.runbt.purple:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(108,99,255,.5)}
+.runbt:disabled{opacity:.5;cursor:not-allowed;transform:none !important;box-shadow:none !important}
 .spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .65s linear infinite;display:none}
 .spin.on{display:block}
 @keyframes sp{to{transform:rotate(360deg)}}
 .pgcd{display:none}.pgcd.on{display:block}
 .pghr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
 .pglb{font-size:13px;font-weight:500}
-.pgpc{font-size:22px;font-weight:700;color:var(--gn);font-family:'JetBrains Mono',monospace}
+.pgpc{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.pgpc.teal{color:var(--gn)}.pgpc.purple{color:var(--ac)}
 .pgtr{height:4px;background:var(--sur3);border-radius:99px;overflow:hidden;margin-bottom:14px}
-.pgbr{height:100%;background:linear-gradient(90deg,#22d3a0,#06b6d4);border-radius:99px;width:0%;transition:width .35s}
+.pgbr{height:100%;border-radius:99px;width:0%;transition:width .35s}
+.pgbr.teal{background:linear-gradient(90deg,#22d3a0,#06b6d4)}
+.pgbr.purple{background:linear-gradient(90deg,#6c63ff,#8b5cf6)}
 .log{background:var(--bg);border:1px solid var(--bdr);border-radius:9px;padding:12px;max-height:200px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:2}
 .ll{display:flex;gap:12px}.lt{color:var(--tx3);flex-shrink:0;min-width:52px}
 .ll.info .lm{color:var(--tx2)}.ll.pg .lm{color:var(--tx)}.ll.ok .lm{color:var(--gn)}.ll.er .lm{color:var(--rd)}
 .rscd{display:none}.rscd.on{display:block}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 .st{background:var(--sur2);border:1px solid var(--bdr);border-radius:11px;padding:14px;text-align:center}
 .stv{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
-.stv.a{color:var(--ac)}.stv.g{color:var(--gn)}
+.stv.a{color:var(--ac)}.stv.g{color:var(--gn)}.stv.m{color:var(--tx2)}
 .stl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tx3)}
 .div{height:1px;background:var(--bdr);margin:14px 0}
 .epscroll{max-height:280px;overflow-y:auto}
 .epitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bdr)}
 .epitem:last-child{border-bottom:none}
-.epnum{flex-shrink:0;font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;width:32px}
+.epnum{flex-shrink:0;font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;width:36px}
 .epname{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.epdur{flex-shrink:0;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:600;background:var(--gdm);color:var(--gn);border:1px solid var(--gbr);font-family:'JetBrains Mono',monospace}
-.dlbt{width:100%;padding:12px;background:transparent;border:1.5px solid var(--gn);border-radius:10px;color:var(--gn);font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-top:14px}
-.dlbt:hover{background:var(--gdm)}
+.epdur{flex-shrink:0;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.epdur.teal{background:var(--gdm);color:var(--gn);border:1px solid var(--gbr)}
+.epdur.grey{background:var(--sur3);color:var(--tx3);border:1px solid var(--bdr)}
+.dlbt{width:100%;padding:12px;background:transparent;border-radius:10px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;margin-top:14px}
+.dlbt.teal{border:1.5px solid var(--gn);color:var(--gn)}.dlbt.teal:hover{background:var(--gdm)}
+.dlbt.purple{border:1.5px solid var(--ac);color:var(--ac)}.dlbt.purple:hover{background:var(--adm)}
 .rstbt{width:100%;padding:10px;background:transparent;border:1px solid var(--bdr);border-radius:9px;color:var(--tx2);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;margin-top:8px;transition:all .15s}
 .rstbt:hover{border-color:var(--bdr2);color:var(--tx)}
-
-/* === ALL EPISODES SECTION === */
-.sect-divider{height:1px;background:var(--bdr);margin:36px 0 28px}
-.num-inp{background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;width:100%;transition:border-color .15s,box-shadow .15s}
-.num-inp:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(108,99,255,.12)}
-.range-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.ae-runbt{width:100%;padding:14px;background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:11px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .15s;box-shadow:0 4px 20px rgba(108,99,255,.4);letter-spacing:-.01em}
-.ae-runbt:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(108,99,255,.5)}
-.ae-runbt:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.ae-pgcd{display:none}.ae-pgcd.on{display:block}
-.ae-rscd{display:none}.ae-rscd.on{display:block}
-.ae-epitem{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bdr)}
-.ae-epitem:last-child{border-bottom:none}
-.ae-epnum{flex-shrink:0;font-size:11px;color:var(--tx3);font-family:'JetBrains Mono',monospace;width:36px}
-.ae-epname{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ae-epdur{flex-shrink:0;padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:600;font-family:'JetBrains Mono',monospace}
-.ae-epdur.has{background:var(--gdm);color:var(--gn);border:1px solid var(--gbr)}
-.ae-epdur.none{background:var(--sur3);color:var(--tx3);border:1px solid var(--bdr)}</style>
+.sect-sep{height:1px;background:var(--bdr);margin:40px 0 36px}
+</style>
 </head>
 <body>
 <div class="w">
+
+<!-- TBR SECTION -->
 <div class="brand">
-  <div class="bico">⏱</div>
+  <div class="bico teal">⏱</div>
   <div><div class="bnm">PocketFM CMS Toolkit</div><div class="bsb">TBR Duration Extractor</div></div>
 </div>
 <h1>TBR Duration Extractor</h1>
-<div class="dsc">Extract audio durations for all To Be Recorded episodes from any show. Fully paginated, sorted by episode — clean CSV export.</div>
+<div class="dsc">Extract durations for all <strong style="color:var(--tx)">To Be Recorded</strong> episodes — only episodes with no audio yet. Fully paginated, sorted by episode number.</div>
 <div class="sess">
   <div class="dot" id="dot"></div>
   <div><div class="snm" id="snm">Not connected</div><div class="ssb" id="ssb">Connect using one of the two methods below</div></div>
@@ -123,11 +125,7 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
   <div class="bmds">Two ways to connect. <strong style="color:var(--gn)">Method 1 is easiest</strong> — no setup needed, works every time.</div>
   <div class="mbox">
     <div class="mlbl g">✅ Method 1 — Run script in browser console (recommended)</div>
-    <div class="mdsc">
-      1. Open <strong>cms.pocketfm.com</strong> and make sure you're logged in<br>
-      2. Press <strong>F12</strong> → click the <strong>Console</strong> tab<br>
-      3. Click <strong>"📋 Copy Script"</strong> below → paste in console → press <strong>Enter</strong>
-    </div>
+    <div class="mdsc">1. Open <strong>cms.pocketfm.com</strong> and make sure you're logged in<br>2. Press <strong>F12</strong> → click the <strong>Console</strong> tab<br>3. Click <strong>"📋 Copy Script"</strong> below → paste in console → press <strong>Enter</strong></div>
     <textarea class="cpta" id="consoleScript" readonly></textarea>
     <div class="cprow">
       <button class="cpbtn" id="copyConsolBtn" onclick="copyConsole()">📋 Copy Script</button>
@@ -136,16 +134,9 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
   </div>
   <div class="mbox">
     <div class="mlbl a">Method 2 — Bookmarklet (one-time setup, then 1-click)</div>
-    <div class="mdsc">
-      1. Press <strong>Ctrl+Shift+B</strong> to show bookmarks bar<br>
-      2. Right-click bookmarks bar → <strong>"Add bookmark"</strong><br>
-      3. Name: <code>⏱ TBR</code> — URL: paste the code below → Save<br>
-      4. Go to <strong>cms.pocketfm.com</strong> → click the bookmark → opens connected ✅
-    </div>
+    <div class="mdsc">1. Press <strong>Ctrl+Shift+B</strong> to show bookmarks bar<br>2. Right-click bookmarks bar → <strong>"Add bookmark"</strong><br>3. Name: <code>⏱ TBR</code> — URL: paste the code below → Save<br>4. Go to <strong>cms.pocketfm.com</strong> → click the bookmark → opens connected ✅</div>
     <textarea class="cpta" id="bmCode" readonly></textarea>
-    <div class="cprow">
-      <button class="cpbtn" onclick="copyBm()">📋 Copy Bookmarklet Code</button>
-    </div>
+    <div class="cprow"><button class="cpbtn" onclick="copyBm()">📋 Copy Bookmarklet Code</button></div>
   </div>
 </div>
 <div class="slb">Show ID</div>
@@ -157,85 +148,80 @@ h1{font-size:28px;font-weight:700;letter-spacing:-.03em;margin-bottom:6px}
 <div class="card">
   <div style="margin-bottom:14px"><label class="flb">CSV Filename</label><input class="tinp" id="csvName" value="TBR_Durations.csv"/></div>
   <div class="byl">Built by <a href="mailto:con-mayank.mandal@pocketfm.com">Mayank Mandal</a> · PocketFM</div>
-  <button class="runbt" id="runBtn" onclick="run()">
+  <button class="runbt teal" id="runBtn" onclick="runTBR()">
     <div class="spin" id="spin"></div>
     <span id="bi">⚡</span><span id="bl">Extract TBR Durations</span>
   </button>
 </div>
 <div class="card pgcd" id="pgCard">
-  <div class="pghr"><div class="pglb" id="pglb">Initialising…</div><div class="pgpc" id="pgpc">0%</div></div>
-  <div class="pgtr"><div class="pgbr" id="pgbr"></div></div>
+  <div class="pghr"><div class="pglb" id="pglb">Initialising…</div><div class="pgpc teal" id="pgpc">0%</div></div>
+  <div class="pgtr"><div class="pgbr teal" id="pgbr"></div></div>
   <div class="log" id="logBox"></div>
 </div>
 <div class="card rscd" id="rsCard">
   <div class="slb" style="margin-bottom:14px">Results</div>
   <div class="stats">
-    <div class="st"><div class="stv a" id="stEps">0</div><div class="stl">Episodes</div></div>
+    <div class="st"><div class="stv a" id="stEps">0</div><div class="stl">TBR Episodes</div></div>
     <div class="st"><div class="stv g" id="stDur">0h 0m</div><div class="stl">Total Duration</div></div>
   </div>
   <div class="div"></div>
   <div class="epscroll" id="epList"></div>
-  <button class="dlbt" id="dlBtn">↓ Download CSV</button>
-  <button class="rstbt" onclick="resetUI()">↺ New extraction</button>
-</div>
+  <button class="dlbt teal" id="dlBtn">↓ Download CSV</button>
+  <button class="rstbt" onclick="resetTBR()">↺ New extraction</button>
 </div>
 
-<!-- ===== ALL EPISODES DURATION SECTION ===== -->
-<div class="sect-divider"></div>
-
-<div class="brand" style="margin-bottom:8px">
-  <div class="bico" style="background:linear-gradient(135deg,#6c63ff,#8b5cf6);box-shadow:0 4px 14px rgba(108,99,255,.35)">📂</div>
+<!-- ALL EPISODES SECTION -->
+<div class="sect-sep"></div>
+<div class="brand">
+  <div class="bico purple">📂</div>
   <div><div class="bnm">PocketFM CMS Toolkit</div><div class="bsb">All Episodes Duration</div></div>
 </div>
 <h1>All Episodes Duration</h1>
-<div class="dsc">Extract audio durations for ALL episodes of a show — both recorded and unrecorded. Filter by episode range. Episodes without audio show as N/A.</div>
-
+<div class="dsc">Extract audio durations for <strong style="color:var(--tx)">all episodes</strong> of a show — both recorded and unrecorded. Filter by episode range to extract a specific slice.</div>
 <div class="slb">Show ID</div>
 <div class="card">
   <input class="sidinp" type="text" id="aeShowId" placeholder="Paste Show ID or full CMS URL"/>
   <div class="hint">The Show ID is extracted automatically from a full CMS URL</div>
 </div>
-
-<div class="slb">Episode Range <span style="font-size:10px;color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0">(optional — leave blank for all episodes)</span></div>
+<div class="slb">Episode Range <span style="font-size:10px;color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0">(optional — leave blank for all)</span></div>
 <div class="card">
-  <div class="range-grid">
-    <div><label class="flb">Start Episode #</label><input class="num-inp" type="number" id="aeStart" placeholder="e.g. 1" min="1"/></div>
-    <div><label class="flb">End Episode #</label><input class="num-inp" type="number" id="aeEnd" placeholder="e.g. 100" min="1"/></div>
+  <div class="dgd">
+    <div><label class="flb">Start Episode #</label><input class="numinp" type="number" id="aeStart" placeholder="e.g. 1" min="1"/></div>
+    <div><label class="flb">End Episode #</label><input class="numinp" type="number" id="aeEnd" placeholder="e.g. 100" min="1"/></div>
   </div>
   <div class="hint" style="margin-top:10px">Leave blank to extract all episodes. Enter numbers to limit the range.</div>
 </div>
-
 <div class="slb">Output</div>
 <div class="card">
   <div style="margin-bottom:14px"><label class="flb">CSV Filename</label><input class="tinp" id="aeCsvName" value="All_Episodes_Duration.csv"/></div>
   <div class="byl">Built by <a href="mailto:con-mayank.mandal@pocketfm.com">Mayank Mandal</a> · PocketFM</div>
-  <button class="ae-runbt" id="aeRunBtn" onclick="runAllEps()">
+  <button class="runbt purple" id="aeRunBtn" onclick="runAllEps()">
     <div class="spin" id="aeSpin"></div>
     <span id="aeBi">⚡</span><span id="aeBl">Extract All Episodes Duration</span>
   </button>
 </div>
-
-<div class="card ae-pgcd" id="aePgCard">
-  <div class="pghr"><div class="pglb" id="aePgLbl">Initialising…</div><div class="pgpc" id="aePgPct">0%</div></div>
-  <div class="pgtr"><div class="pgbr" id="aePgBar" style="background:linear-gradient(90deg,#6c63ff,#8b5cf6)"></div></div>
+<div class="card pgcd" id="aePgCard">
+  <div class="pghr"><div class="pglb" id="aePglb">Initialising…</div><div class="pgpc purple" id="aePgpc">0%</div></div>
+  <div class="pgtr"><div class="pgbr purple" id="aePgbr"></div></div>
   <div class="log" id="aeLogBox"></div>
 </div>
-
-<div class="card ae-rscd" id="aeResCard">
+<div class="card rscd" id="aeRsCard">
   <div class="slb" style="margin-bottom:14px">Results</div>
-  <div class="stats">
+  <div class="stats3">
     <div class="st"><div class="stv a" id="aeStTotal">0</div><div class="stl">Total Eps</div></div>
-    <div class="st"><div class="stv g" id="aeStWithDur">0</div><div class="stl">With Audio</div></div>
-    <div class="st"><div class="stv" style="color:var(--tx2)" id="aeStDur">0h 0m</div><div class="stl">Total Duration</div></div>
+    <div class="st"><div class="stv g" id="aeStWith">0</div><div class="stl">With Audio</div></div>
+    <div class="st"><div class="stv m" id="aeStDur">0h 0m</div><div class="stl">Total Duration</div></div>
   </div>
   <div class="div"></div>
   <div class="epscroll" id="aeEpList"></div>
-  <button class="dlbt" id="aeDlBtn" style="border-color:var(--ac);color:var(--ac)">↓ Download CSV</button>
+  <button class="dlbt purple" id="aeDlBtn">↓ Download CSV</button>
   <button class="rstbt" onclick="resetAE()">↺ New extraction</button>
+</div>
+
 </div>
 <script>
 'use strict';
-var _t='',_u='',_csv='',_fn='';
+var _t='',_u='',_tbrCsv='',_tbrFn='',_aeCsv='',_aeFn='';
 var PAGE='https://con-mayankmandal-netizen.github.io/tbr-duration/';
 (function(){
   var script='window.open("'+PAGE+'?t="+encodeURIComponent(localStorage.getItem("token"))+"&u="+encodeURIComponent(localStorage.getItem("uid"))+"&n="+encodeURIComponent(localStorage.getItem("name")||"CMS User"),"_blank")';
@@ -272,197 +258,131 @@ function copyBm(){
 })();
 function extId(v){var m=v.match(/[?&]id=([a-f0-9]{20,})/i);return m?m[1]:v.trim();}
 function hdrs(){return{'Accept':'application/json','app-version':'180','auth-token':'web-auth','app-client':'consumer-web','Source':'cms','access-token':_t,'uid':_u};}
-function setProg(p,l){document.getElementById('pgbr').style.width=p+'%';document.getElementById('pgpc').textContent=Math.round(p)+'%';if(l)document.getElementById('pglb').textContent=l;}
-function lg(m,t){var b=document.getElementById('logBox'),r=document.createElement('div');r.className='ll '+(t||'info');var ts=new Date().toLocaleTimeString('en-GB',{hour12:false});r.innerHTML='<span class="lt">'+ts+'</span><span class="lm">'+m+'</span>';b.appendChild(r);b.scrollTop=b.scrollHeight;}
-function fmtDur(sec){if(!sec||isNaN(sec))return{mmss:'--:--',nice:'N/A'};var m=Math.floor(sec/60),s=Math.round(sec%60);return{mmss:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'),nice:(m>0?m+'m ':'')+s+'s'};}
-async function run(){
-  if(!_t||!_u){alert('Not connected.\n\nUse Method 1:\n1. Go to cms.pocketfm.com\n2. Press F12 → Console tab\n3. Click "Copy Script" on this page\n4. Paste in console → Enter');return;}
+function fmtDur(sec){if(!sec||isNaN(sec)||sec<=0)return{mmss:'--:--'};var m=Math.floor(sec/60),s=Math.round(sec%60);return{mmss:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};}
+function setProg(bar,pct,lbl,p,l){document.getElementById(bar).style.width=p+'%';document.getElementById(pct).textContent=Math.round(p)+'%';if(l)document.getElementById(lbl).textContent=l;}
+function addLog(box,m,t){var b=document.getElementById(box),r=document.createElement('div');r.className='ll '+(t||'info');var ts=new Date().toLocaleTimeString('en-GB',{hour12:false});r.innerHTML='<span class="lt">'+ts+'</span><span class="lm">'+m+'</span>';b.appendChild(r);b.scrollTop=b.scrollHeight;}
+
+async function runTBR(){
+  if(!_t||!_u){alert('Not connected. Use Method 1: F12 on cms.pocketfm.com → Console → Copy Script → Paste → Enter.');return;}
   var sid=extId(document.getElementById('showId').value.trim());
-  var fn=(document.getElementById('csvName').value.trim()||'TBR_Durations').replace(/\.csv$/i,'')+'.csv';
   if(!sid||!/^[a-f0-9]{20,}$/i.test(sid)){alert('Please enter a valid Show ID or paste a full CMS URL.');return;}
+  var fn=(document.getElementById('csvName').value.trim()||'TBR_Durations').replace(/\.csv$/i,'')+'.csv';
   var btn=document.getElementById('runBtn');
-  btn.disabled=true;
-  document.getElementById('spin').className='spin on';
-  document.getElementById('bi').style.display='none';
-  document.getElementById('bl').textContent='Extracting…';
-  document.getElementById('pgCard').className='card pgcd on';
-  document.getElementById('rsCard').className='card rscd';
+  btn.disabled=true;document.getElementById('spin').className='spin on';
+  document.getElementById('bi').style.display='none';document.getElementById('bl').textContent='Extracting…';
+  document.getElementById('pgCard').className='card pgcd on';document.getElementById('rsCard').className='card rscd';
   document.getElementById('logBox').innerHTML='';
   var H=hdrs(),allEps=[],seenIds=new Set();
-  var params=new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
-  var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+params;
+  var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
   var pg=0;
-  lg('Show: '+sid.slice(0,14)+'…','info');
-  while(url&&pg<100){
-    pg++;
-    setProg(Math.min(pg*5,88),'Fetching page '+pg+'…');
+  addLog('logBox','Show: '+sid.slice(0,14)+'… (TBR only — no audio yet)','info');
+  while(url&&pg<200){
+    pg++;setProg('pgbr','pgpc','pglb',Math.min(pg*5,88),'Page '+pg+'…');
     try{
       var resp=await fetch(url,{headers:H,credentials:'include'});
-      if(!resp.ok){lg('HTTP '+resp.status+' on page '+pg,'er');break;}
+      if(!resp.ok){addLog('logBox','HTTP '+resp.status+' p'+pg,'er');break;}
       var d=await resp.json();
-      var eps=d&&d.result&&d.result.episodes||[];
-      var added=0;
+      var eps=d&&d.result&&d.result.episodes||[],added=0;
       eps.forEach(function(ep){
         var eid=ep.chapter_details&&ep.chapter_details.chapter_id;
         if(eid&&seenIds.has(eid))return;
         if(eid)seenIds.add(eid);
-        if(ep.audio_duration>0)return; // TBR only = no audio yet
-        allEps.push(ep);
-        added++;
+        if(ep.audio_duration>0)return; // TBR only: skip episodes that already have audio
+        allEps.push(ep);added++;
       });
-      lg('Page '+pg+' → '+added+' TBR eps ('+allEps.length+' total)','pg');
+      addLog('logBox','Page '+pg+' → '+added+' TBR eps ('+allEps.length+' total)','pg');
       url=d&&d.result&&d.result.next_url||null;
       if(!added&&eps.length>0&&pg>1)break;
-    }catch(ex){lg('Error: '+ex.message,'er');break;}
+    }catch(ex){addLog('logBox','Error: '+ex.message,'er');break;}
   }
-  setProg(92,'Building CSV…');
-  if(!allEps.length){lg('No episodes found for this Show ID.','er');btn.disabled=false;document.getElementById('spin').className='spin';document.getElementById('bi').style.display='';document.getElementById('bl').textContent='Extract TBR Durations';return;}
+  setProg('pgbr','pgpc','pglb',92,'Building CSV…');
+  if(!allEps.length){addLog('logBox','No TBR episodes found.','er');btn.disabled=false;document.getElementById('spin').className='spin';document.getElementById('bi').style.display='';document.getElementById('bl').textContent='Extract TBR Durations';return;}
   allEps.sort(function(a,b){return(a.natural_sequence_number||0)-(b.natural_sequence_number||0);});
-  var cols=['episode_number','episode_title','duration_mmss','duration_seconds'];
-  var csv=cols.join(',')+"\n";
-  allEps.forEach(function(ep){
-    var num=ep.natural_sequence_number||'';
-    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'';
-    var dur=fmtDur(ep.audio_duration);
-    var secs=ep.audio_duration||0;
-    csv+='"'+String(num).replace(/"/g,'""')+'","'+title.replace(/"/g,'""')+'","'+dur.mmss+'","'+secs+'"\n';
-  });
-  _csv=csv;_fn=fn;
-  var totalSec=allEps.reduce(function(s,ep){return s+(ep.audio_duration||0);},0);
-  var th=Math.floor(totalSec/3600),tm=Math.floor((totalSec%3600)/60);
-  setProg(100,'Done!');
-  lg('✓ '+allEps.length+' episodes · '+th+'h '+tm+'m total','ok');
+  var csv='episode_number,episode_title,duration_mmss,duration_seconds\n';
+  allEps.forEach(function(ep){var d=fmtDur(ep.audio_duration);csv+='"'+(ep.natural_sequence_number||'')+'","'+(ep.chapter_details&&ep.chapter_details.chapter_title||'').replace(/"/g,'""')+'","'+d.mmss+'","'+(ep.audio_duration||0)+'"\n';});
+  _tbrCsv=csv;_tbrFn=fn;
+  var tot=allEps.reduce(function(s,e){return s+(e.audio_duration||0);},0),th=Math.floor(tot/3600),tm=Math.floor((tot%3600)/60);
+  setProg('pgbr','pgpc','pglb',100,'Done!');
+  addLog('logBox','✓ '+allEps.length+' TBR eps · '+th+'h '+tm+'m','ok');
   document.getElementById('stEps').textContent=allEps.length;
   document.getElementById('stDur').textContent=th+'h '+tm+'m';
   var list=document.getElementById('epList');list.innerHTML='';
-  allEps.forEach(function(ep){
-    var dur=fmtDur(ep.audio_duration);
-    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'Unknown';
-    var el=document.createElement('div');el.className='epitem';
-    el.innerHTML='<div class="epnum">#'+(ep.natural_sequence_number||'?')+'</div><div class="epname">'+title+'</div><div class="epdur">'+dur.mmss+'</div>';
-    list.appendChild(el);
-  });
-  document.getElementById('dlBtn').onclick=function(){
-    var a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([_csv],{type:'text/csv'}));
-    a.download=_fn;document.body.appendChild(a);a.click();document.body.removeChild(a);
-  };
-  document.getElementById('dlBtn').textContent='↓ Download '+fn+' ('+allEps.length+' episodes)';
+  allEps.forEach(function(ep){var d=fmtDur(ep.audio_duration);var el=document.createElement('div');el.className='epitem';el.innerHTML='<div class="epnum">#'+(ep.natural_sequence_number||'?')+'</div><div class="epname">'+(ep.chapter_details&&ep.chapter_details.chapter_title||'Unknown')+'</div><div class="epdur teal">'+d.mmss+'</div>';list.appendChild(el);});
+  document.getElementById('dlBtn').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([_tbrCsv],{type:'text/csv'}));a.download=_tbrFn;document.body.appendChild(a);a.click();document.body.removeChild(a);};
+  document.getElementById('dlBtn').textContent='↓ Download '+fn+' ('+allEps.length+' eps)';
   document.getElementById('rsCard').className='card rscd on';
   btn.disabled=false;document.getElementById('spin').className='spin';document.getElementById('bi').style.display='';document.getElementById('bl').textContent='Extract TBR Durations';
 }
-function resetUI(){
-  document.getElementById('pgCard').className='card pgcd';
-  document.getElementById('rsCard').className='card rscd';
-  document.getElementById('logBox').innerHTML='';
-  document.getElementById('epList').innerHTML='';
-  setProg(0,'Initialising…');
-}
+function resetTBR(){document.getElementById('pgCard').className='card pgcd';document.getElementById('rsCard').className='card rscd';document.getElementById('logBox').innerHTML='';document.getElementById('epList').innerHTML='';setProg('pgbr','pgpc','pglb',0,'Initialising…');}
 
-
-/* ===== ALL EPISODES DURATION ===== */
-var _aeCsv='',_aeFn='';
-function aeLg(m,t){var b=document.getElementById('aeLogBox'),r=document.createElement('div');r.className='ll '+(t||'info');var ts=new Date().toLocaleTimeString('en-GB',{hour12:false});r.innerHTML='<span class="lt">'+ts+'</span><span class="lm">'+m+'</span>';b.appendChild(r);b.scrollTop=b.scrollHeight;}
-function aeSetProg(p,l){document.getElementById('aePgBar').style.width=p+'%';document.getElementById('aePgPct').textContent=Math.round(p)+'%';if(l)document.getElementById('aePgLbl').textContent=l;}
 async function runAllEps(){
-  if(!_t||!_u){alert('Not connected.\n\nUse Method 1:\n1. Go to cms.pocketfm.com\n2. Press F12 → Console tab\n3. Click "Copy Script" on this page\n4. Paste in console → Enter');return;}
+  if(!_t||!_u){alert('Not connected. Use Method 1: F12 on cms.pocketfm.com → Console → Copy Script → Paste → Enter.');return;}
   var sid=extId(document.getElementById('aeShowId').value.trim());
   if(!sid||!/^[a-f0-9]{20,}$/i.test(sid)){alert('Please enter a valid Show ID or paste a full CMS URL.');return;}
   var startEp=parseInt(document.getElementById('aeStart').value)||null;
   var endEp=parseInt(document.getElementById('aeEnd').value)||null;
-  if(startEp&&endEp&&startEp>endEp){alert('Start episode must be less than or equal to end episode.');return;}
+  if(startEp&&endEp&&startEp>endEp){alert('Start episode must be ≤ end episode.');return;}
   var fn=(document.getElementById('aeCsvName').value.trim()||'All_Episodes_Duration').replace(/\.csv$/i,'')+'.csv';
   var btn=document.getElementById('aeRunBtn');
-  btn.disabled=true;
-  document.getElementById('aeSpin').className='spin on';
-  document.getElementById('aeBi').style.display='none';
-  document.getElementById('aeBl').textContent='Extracting…';
-  document.getElementById('aePgCard').className='card ae-pgcd on';
-  document.getElementById('aeResCard').className='card ae-rscd';
+  btn.disabled=true;document.getElementById('aeSpin').className='spin on';
+  document.getElementById('aeBi').style.display='none';document.getElementById('aeBl').textContent='Extracting…';
+  document.getElementById('aePgCard').className='card pgcd on';document.getElementById('aeRsCard').className='card rscd';
   document.getElementById('aeLogBox').innerHTML='';
   var H=hdrs(),allEps=[],seenIds=new Set();
-  var params=new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
-  var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+params;
+  var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
   var pg=0;
-  aeLg('Show: '+sid.slice(0,14)+'… | Range: ep'+(startEp||'1')+' → ep'+(endEp||'∞'),'info');
+  addLog('aeLogBox','Show: '+sid.slice(0,14)+'… | Range: ep'+(startEp||'1')+' → ep'+(endEp||'∞'),'info');
   while(url&&pg<200){
-    pg++;
-    aeSetProg(Math.min(pg*3,85),'Fetching page '+pg+'…');
+    pg++;setProg('aePgbr','aePgpc','aePglb',Math.min(pg*3,85),'Page '+pg+'…');
     try{
       var resp=await fetch(url,{headers:H,credentials:'include'});
-      if(!resp.ok){aeLg('HTTP '+resp.status+' on page '+pg,'er');break;}
+      if(!resp.ok){addLog('aeLogBox','HTTP '+resp.status+' p'+pg,'er');break;}
       var d=await resp.json();
-      var eps=d&&d.result&&d.result.episodes||[];
-      var added=0,pastEnd=false;
+      var eps=d&&d.result&&d.result.episodes||[],added=0;
       eps.forEach(function(ep){
         var num=ep.natural_sequence_number||0;
-        // Skip if before start range
         if(startEp&&num<startEp)return;
-        // Mark if past end range
-        if(endEp&&num>endEp){pastEnd=true;return;}
+        if(endEp&&num>endEp)return;
         var eid=ep.chapter_details&&ep.chapter_details.chapter_id;
         if(eid&&seenIds.has(eid))return;
         if(eid)seenIds.add(eid);
-        allEps.push(ep);
-        added++;
+        allEps.push(ep);added++;
       });
-      aeLg('Page '+pg+' → '+added+' eps ('+allEps.length+' total)','pg');
-      // Stop if all episodes on this page are past the end range
-      if(endEp&&pastEnd&&eps.every(function(ep){return (ep.natural_sequence_number||0)>endEp;}))break;
+      addLog('aeLogBox','Page '+pg+' → '+added+' eps ('+allEps.length+' total)','pg');
+      if(endEp&&eps.length>0&&eps.every(function(e){return(e.natural_sequence_number||0)>endEp;}))break;
       url=d&&d.result&&d.result.next_url||null;
-      if(!added&&eps.length>0&&!pastEnd)break;
-    }catch(ex){aeLg('Error: '+ex.message,'er');break;}
+    }catch(ex){addLog('aeLogBox','Error: '+ex.message,'er');break;}
   }
-  aeSetProg(92,'Building CSV…');
-  if(!allEps.length){aeLg('No episodes found.','er');btn.disabled=false;document.getElementById('aeSpin').className='spin';document.getElementById('aeBi').style.display='';document.getElementById('aeBl').textContent='Extract All Episodes Duration';return;}
-  // Sort by episode number
+  setProg('aePgbr','aePgpc','aePglb',92,'Building CSV…');
+  if(!allEps.length){addLog('aeLogBox','No episodes found.','er');btn.disabled=false;document.getElementById('aeSpin').className='spin';document.getElementById('aeBi').style.display='';document.getElementById('aeBl').textContent='Extract All Episodes Duration';return;}
   allEps.sort(function(a,b){return(a.natural_sequence_number||0)-(b.natural_sequence_number||0);});
-  // Build CSV
-  var cols=['episode_number','episode_title','duration_mmss','duration_seconds','audio_status'];
-  var csv=cols.join(',')+"\n";
+  var csv='episode_number,episode_title,duration_mmss,duration_seconds,audio_status\n';
   allEps.forEach(function(ep){
-    var num=ep.natural_sequence_number||'';
-    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'';
+    var d=fmtDur(ep.audio_duration);var hasDur=ep.audio_duration>0;
     var status=ep.chapter_details&&ep.chapter_details.audio_status||'unknown';
-    var dur=fmtDur(ep.audio_duration);
-    var secs=ep.audio_duration||0;
-    csv+='"'+String(num).replace(/"/g,'""')+'","'+title.replace(/"/g,'""')+'","'+(secs>0?dur.mmss:'N/A')+'","'+secs+'","'+status+'"\n';
+    csv+='"'+(ep.natural_sequence_number||'')+'","'+(ep.chapter_details&&ep.chapter_details.chapter_title||'').replace(/"/g,'""')+'","'+(hasDur?d.mmss:'N/A')+'","'+(ep.audio_duration||0)+'","'+status+'"\n';
   });
   _aeCsv=csv;_aeFn=fn;
-  var totalSec=allEps.reduce(function(s,ep){return s+(ep.audio_duration||0);},0);
-  var th=Math.floor(totalSec/3600),tm=Math.floor((totalSec%3600)/60);
-  var withDur=allEps.filter(function(ep){return ep.audio_duration>0;}).length;
-  aeSetProg(100,'Done!');
-  aeLg('✓ '+allEps.length+' eps | '+withDur+' with audio | '+th+'h '+tm+'m total','ok');
+  var tot=allEps.reduce(function(s,e){return s+(e.audio_duration||0);},0),th=Math.floor(tot/3600),tm=Math.floor((tot%3600)/60);
+  var withDur=allEps.filter(function(e){return e.audio_duration>0;}).length;
+  setProg('aePgbr','aePgpc','aePglb',100,'Done!');
+  addLog('aeLogBox','✓ '+allEps.length+' eps | '+withDur+' with audio | '+th+'h '+tm+'m','ok');
   document.getElementById('aeStTotal').textContent=allEps.length;
-  document.getElementById('aeStWithDur').textContent=withDur;
+  document.getElementById('aeStWith').textContent=withDur;
   document.getElementById('aeStDur').textContent=th+'h '+tm+'m';
   var list=document.getElementById('aeEpList');list.innerHTML='';
   allEps.forEach(function(ep){
-    var dur=fmtDur(ep.audio_duration);
-    var title=ep.chapter_details&&ep.chapter_details.chapter_title||'Unknown';
-    var hasDur=ep.audio_duration>0;
-    var el=document.createElement('div');el.className='ae-epitem';
-    el.innerHTML='<div class="ae-epnum">#'+(ep.natural_sequence_number||'?')+'</div>'
-      +'<div class="ae-epname">'+title+'</div>'
-      +'<div class="ae-epdur '+(hasDur?'has':'none')+'">'+(hasDur?dur.mmss:'N/A')+'</div>';
+    var d=fmtDur(ep.audio_duration);var hasDur=ep.audio_duration>0;
+    var el=document.createElement('div');el.className='epitem';
+    el.innerHTML='<div class="epnum">#'+(ep.natural_sequence_number||'?')+'</div><div class="epname">'+(ep.chapter_details&&ep.chapter_details.chapter_title||'Unknown')+'</div><div class="epdur '+(hasDur?'teal':'grey')+'">'+(hasDur?d.mmss:'N/A')+'</div>';
     list.appendChild(el);
   });
-  document.getElementById('aeDlBtn').onclick=function(){
-    var a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([_aeCsv],{type:'text/csv'}));
-    a.download=_aeFn;document.body.appendChild(a);a.click();document.body.removeChild(a);
-  };
+  document.getElementById('aeDlBtn').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([_aeCsv],{type:'text/csv'}));a.download=_aeFn;document.body.appendChild(a);a.click();document.body.removeChild(a);};
   document.getElementById('aeDlBtn').textContent='↓ Download '+fn+' ('+allEps.length+' eps)';
-  document.getElementById('aeResCard').className='card ae-rscd on';
+  document.getElementById('aeRsCard').className='card rscd on';
   btn.disabled=false;document.getElementById('aeSpin').className='spin';document.getElementById('aeBi').style.display='';document.getElementById('aeBl').textContent='Extract All Episodes Duration';
 }
-function resetAE(){
-  document.getElementById('aePgCard').className='card ae-pgcd';
-  document.getElementById('aeResCard').className='card ae-rscd';
-  document.getElementById('aeLogBox').innerHTML='';
-  document.getElementById('aeEpList').innerHTML='';
-  aeSetProg(0,'Initialising…');
-}</script>
+function resetAE(){document.getElementById('aePgCard').className='card pgcd';document.getElementById('aeRsCard').className='card rscd';document.getElementById('aeLogBox').innerHTML='';document.getElementById('aeEpList').innerHTML='';setProg('aePgbr','aePgpc','aePglb',0,'Initialising…');}
+</script>
 </body>
 </html>
