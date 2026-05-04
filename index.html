@@ -289,7 +289,8 @@ async function runTBR(){
   allEps.forEach(function(e){
     var epNum=e.natural_sequence_number||'';
     var title=(e.chapter_details&&e.chapter_details.chapter_title||'Unknown').replace(/"/g,'""');
-    var durSec=e.audio_duration||0;
+    var ttsDur=0;try{var props=JSON.parse((e.text_to_speech_details&&e.text_to_speech_details.job_details&&e.text_to_speech_details.job_details.job_details&&e.text_to_speech_details.job_details.job_details.props)||'{}');ttsDur=Math.round(props.audio_duration_sec||0);}catch(ex){}
+var durSec=(e.audio_duration||0)||(ttsDur||0);
     var d=fmt(durSec);
     csv+=epNum+',"'+title+'",'+d.mmss+',"'+d.nice+'",'+durSec+'\n';
   });
