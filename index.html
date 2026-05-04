@@ -209,14 +209,21 @@ function setProg(p,l){
 }
 
 /* ── MAIN — exact logic from your working script ── */
+// Helper: get duration from audio_duration OR TTS props field
+function getEpDur(e){
+  var ttsDur=0;
+  try{
+    var p=JSON.parse((e.text_to_speech_details&&e.text_to_speech_details.job_details&&e.text_to_speech_details.job_details.job_details&&e.text_to_speech_details.job_details.job_details.props)||'{}');
+    ttsDur=Math.round(p.audio_duration_sec||0);
+  }catch(ex){}
+  return(e.audio_duration||0)||(ttsDur||0);
+}
+
 async function runTBR(){
   if(!_t||!_u){alert('Not connected.\n\nUse Method 1:\n1. Go to cms.pocketfm.com\n2. Press F12 → Console tab\n3. Click "Copy Script" on this page\n4. Paste in console → Enter');return;}
-
   var sid=extId(document.getElementById('showId').value.trim());
   if(!sid||!/^[a-f0-9]{20,}$/i.test(sid)){alert('Please enter a valid Show ID or paste a full CMS URL.');return;}
-
   var fn=(document.getElementById('csvName').value.trim()||'TBR_Durations').replace(/\.csv$/i,'')+'.csv';
-
   var btn=document.getElementById('runBtn');
   btn.disabled=true;
   document.getElementById('spin').className='spin on';
@@ -225,27 +232,13 @@ async function runTBR(){
   document.getElementById('pgCard').className='card pgcd on';
   document.getElementById('rsCard').className='card rscd';
   document.getElementById('logBox').innerHTML='';
-
-  // Auth from session (same as your working script)
-  var token=_t, uid=_u;
-  var headers={
-    'Accept'       :'application/json',
-    'app-version'  :'180',
-    'auth-token'   :'web-auth',
-    'app-client'   :'consumer-web',
-    'Source'       :'cms',
-    'access-token' :token,
-    'uid'          :uid
-  };
-
-  // Fetch ALL pages — exact same loop as your working script
+  var token=_t,uid=_u;
+  var headers={'Accept':'application/json','app-version':'180','auth-token':'web-auth','app-client':'consumer-web','Source':'cms','access-token':token,'uid':uid};
   var allEps=[];
   var p=new URLSearchParams({show_id:sid,view:'cms',paginate_chapters:'true',is_novel:'0'});
   var url='https://api.cms.pocketfm.com/v2/content_api/book.show_episodes?'+p;
   var page=0;
-
   lg('Show: '+sid.slice(0,14)+'…','info');
-
   while(url&&page<100){
     page++;
     setProg(Math.min(page*5,88),'Page '+page+'…');
@@ -259,7 +252,6 @@ async function runTBR(){
       url=d&&d.result&&d.result.next_url||null;
     }catch(ex){lg('Error: '+ex.message,'er');break;}
   }
-
   if(!allEps.length){
     lg('❌ No episodes found. Make sure you are logged in.','er');
     btn.disabled=false;
@@ -268,52 +260,40 @@ async function runTBR(){
     document.getElementById('bl').textContent='Extract TBR Durations';
     return;
   }
-
   setProg(92,'Building CSV…');
-
-  // Format seconds → MM:SS (exact same as your working script)
   function fmt(sec){
     if(!sec||isNaN(sec))return{mmss:'00:00',nice:'N/A'};
     var m=Math.floor(sec/60),s=Math.round(sec%60);
-    return{
-      mmss:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'),
-      nice:(m>0?m+' min ':' ')+(s>0?s+' sec':'')
-    };
+    return{mmss:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'),nice:(m>0?m+' min ':' ')+(s>0?s+' sec':'')};
   }
-
-  // Sort by episode number ascending (exact same)
   allEps.sort(function(a,b){return(a.natural_sequence_number||0)-(b.natural_sequence_number||0);});
-
-  // Build CSV (exact same columns as your working script)
+  // CSV — use getEpDur to get duration from audio_duration OR TTS props
   var csv='Episode Number,Episode Title,Duration (MM:SS),Duration (Formatted),Duration (Seconds)\n';
   allEps.forEach(function(e){
     var epNum=e.natural_sequence_number||'';
     var title=(e.chapter_details&&e.chapter_details.chapter_title||'Unknown').replace(/"/g,'""');
-    var ttsDur=0;try{var props=JSON.parse((e.text_to_speech_details&&e.text_to_speech_details.job_details&&e.text_to_speech_details.job_details.job_details&&e.text_to_speech_details.job_details.job_details.props)||'{}');ttsDur=Math.round(props.audio_duration_sec||0);}catch(ex){}
-var durSec=(e.audio_duration||0)||(ttsDur||0);
+    var durSec=getEpDur(e);
     var d=fmt(durSec);
     csv+=epNum+',"'+title+'",'+d.mmss+',"'+d.nice+'",'+durSec+'\n';
   });
   _csv=csv;_fn=fn;
-
-  var totalSec=allEps.reduce(function(s,e){return s+(e.audio_duration||0);},0);
+  var totalSec=allEps.reduce(function(s,e){return s+getEpDur(e);},0);
   var th=Math.floor(totalSec/3600),tm=Math.floor((totalSec%3600)/60);
   setProg(100,'Done!');
   lg('✅ Done! '+allEps.length+' episodes exported to '+fn,'ok');
-
   document.getElementById('stEps').textContent=allEps.length;
   document.getElementById('stDur').textContent=th+'h '+tm+'m';
-
   var list=document.getElementById('epList');list.innerHTML='';
+  // epList display — use getEpDur too
   allEps.forEach(function(e){
-    var d=fmt(e.audio_duration);
+    var durSec=getEpDur(e);
+    var d=fmt(durSec);
     var el=document.createElement('div');el.className='epitem';
     el.innerHTML='<div class="epnum">#'+(e.natural_sequence_number||'?')+'</div>'
       +'<div class="epname">'+(e.chapter_details&&e.chapter_details.chapter_title||'Unknown')+'</div>'
       +'<div class="epdur">'+d.mmss+'</div>';
     list.appendChild(el);
   });
-
   document.getElementById('dlBtn').onclick=function(){
     var a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([_csv],{type:'text/csv'}));
@@ -322,7 +302,6 @@ var durSec=(e.audio_duration||0)||(ttsDur||0);
   };
   document.getElementById('dlBtn').textContent='↓ Download '+fn+' ('+allEps.length+' episodes)';
   document.getElementById('rsCard').className='card rscd on';
-
   btn.disabled=false;
   document.getElementById('spin').className='spin';
   document.getElementById('bi').style.display='';
